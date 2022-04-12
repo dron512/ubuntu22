@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #define BUFFSIZE 512
 
-void myread(char cary[])
+void myread(char *cary)
 {
 	printf("cary = %d\n", cary);
 	cary[0] = 'a';
@@ -19,6 +19,9 @@ int main(int argc, char **argv)
 	printf("argv[2] = %s\n", argv[2]);
 
 	char buf[BUFFSIZE];
+	myread(buf);
+	printf("buf[0] = %c\n",buf[0]);
+	printf("buf[1] = %c\n",buf[1]);
 	ssize_t nread;
 	int fd = open("myfile", O_RDONLY);
 
