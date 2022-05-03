@@ -17,7 +17,7 @@ int main()
     fd1 = open("studentdb", O_WRONLY | O_CREAT | O_TRUNC, 0640);
     if (fd1 == -1)
     {
-        printf("fd1 create 실패");
+        printf("fd1 create fail");
         return -1;
     }
     printf("학번 이름 점수 입력하세요");

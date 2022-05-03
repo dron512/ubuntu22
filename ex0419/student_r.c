@@ -30,6 +30,10 @@ int main()
         {
             printf("학번 %d 이름 %s 점수 %d\n", student.id, student.name, student.score);
         }
+        else
+        {
+            printf("검색하신 학번은 존재 하지 않습니다.");
+        }
         printf("계속 하시겠습니까?(Y/N) : ");
         getchar();
         scanf("%c", &c);
