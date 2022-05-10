@@ -7,18 +7,9 @@
 
 int main(int argc, char **argv)
 {
-    // 4644
-    // setuid(0);
-
-    /*
-        읽고 싶은 폴더명 입력하세요
-        ls linuxclass
-        linuxclass
-
-    */
-
     // 디렉토리,파일 엔트
     DIR *dp;
+
     // 디렉토리,파일 담는곳
     struct dirent *d;
 
