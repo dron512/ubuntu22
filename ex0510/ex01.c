@@ -22,8 +22,8 @@ char type(mode_t mode)
 char *perm(mode_t mode)
 {
     static char mystring[10] = "---------";
-    printf("mode = %o\n", mode);
-    printf("S_IREAD = %o\n", S_IREAD);
+    // printf("mode = %o\n", mode);
+    // printf("S_IREAD = %o\n", S_IREAD);
 
     strcpy(mystring, "---------");
 
@@ -100,6 +100,16 @@ void printaa(struct aa *pa)
 */
 int main(int argc, char **argv)
 {
+    int a = 10;
+    switch (a)
+    {
+    case 10:
+        printf("테스트 해본다");
+        break;
+
+    default:
+        break;
+    }
     // struct aa maina;
     // printf("&maina %d\n", &maina);
     // setaa(&maina);

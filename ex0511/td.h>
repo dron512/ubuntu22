@@ -1,0 +1,123 @@
+SETUID(2)      Linux Programmer's Manual      SETUID(2)
+
+NNAAMMEE
+       setuid - set user identity
+
+SSYYNNOOPPSSIISS
+       ##iinncclluuddee <<ssyyss//ttyyppeess..hh>>
+       ##iinncclluuddee <<uunniissttdd..hh>>
+
+       iinntt sseettuuiidd((uuiidd__tt _u_i_d));;
+
+DDEESSCCRRIIPPTTIIOONN
+       sseettuuiidd() sets the effective user ID of the call‐
+       ing process.  If the calling process  is  privi‐
+       leged  (more  precisely:  if the process has the
+       CCAAPP__SSEETTUUIIDD capability in  its  user  namespace),
+       the real UID and saved set-user-ID are also set.
+
+       Under  Linux,  sseettuuiidd()  is implemented like the
+       POSIX version with the __PPOOSSIIXX__SSAAVVEEDD__IIDDSS feature.
+       This allows a set-user-ID (other than root) pro‐
+       gram to drop all of its user privileges, do some
+       un-privileged work, and then reengage the origi‐
+       nal effective user ID in a secure manner.
+
+       If the user is root or the program is  set-user-
+       ID-root,  special  care  must be taken: sseettuuiidd()
+       checks the effective user ID of the  caller  and
+       if it is the superuser, all process-related user
+       ID's are set to _u_i_d.  After this  has  occurred,
+       it  is impossible for the program to regain root
+       privileges.
+
+       Thus, a set-user-ID-root program wishing to tem‐
+       porarily  drop root privileges, assume the iden‐
+       tity of an unprivileged user,  and  then  regain
+       root  privileges  afterward cannot use sseettuuiidd().
+       You can accomplish this with sseetteeuuiidd(2).
+
+RREETTUURRNN VVAALLUUEE
+       On success, zero is returned.  On error,  -1  is
+       returned, and _e_r_r_n_o is set appropriately.
+
+       _N_o_t_e:  there  are  cases where sseettuuiidd() can fail
+       even when the caller is UID 0; it is a grave se‐
+       curity  error to omit checking for a failure re‐
+       turn from sseettuuiidd().
+
+EERRRROORRSS
+       EEAAGGAAIINN The call would change the  caller's  real
+              UID   (i.e.,   _u_i_d  does  not  match  the
+              caller's real UID), but there was a  tem‐
+              porary  failure  allocating the necessary
+              kernel data structures.
+
+       EEAAGGAAIINN _u_i_d does not match the real  user  ID  of
+              the  caller and this call would bring the
+              number of processes belonging to the real
+              user    ID    _u_i_d   over   the   caller's
+              RRLLIIMMIITT__NNPPRROOCC resource limit.  Since Linux
+              3.1,  this  error  case  no longer occurs
+              (but robust applications should check for
+              this  error);  see the description of EEAA‐‐
+              GGAAIINN in eexxeeccvvee(2).
+
+       EEIINNVVAALL The user ID specified in _u_i_d is not valid
+              in this user namespace.
+
+       EEPPEERRMM  The  user  is not privileged (Linux: does
+              not have the CCAAPP__SSEETTUUIIDD capability in its
+              user  namespace)  and  _u_i_d does not match
+              the real UID or saved set-user-ID of  the
+              calling process.
+
+CCOONNFFOORRMMIINNGG TTOO
+       POSIX.1-2001,  POSIX.1-2008,  SVr4.   Not  quite
+       compatible with the 4.4BSD call, which sets  all
+       of the real, saved, and effective user IDs.
+
+NNOOTTEESS
+       Linux has the concept of the filesystem user ID,
+       normally equal to the effective  user  ID.   The
+       sseettuuiidd()  call  also sets the filesystem user ID
+       of the calling process.  See sseettffssuuiidd(2).
+
+       If _u_i_d is different from the old effective  UID,
+       the  process will be forbidden from leaving core
+       dumps.
+
+       The original Linux  sseettuuiidd()  system  call  sup‐
+       ported  only  16-bit  user  IDs.   Subsequently,
+       Linux 2.4  added  sseettuuiidd3322()  supporting  32-bit
+       IDs.  The glibc sseettuuiidd() wrapper function trans‐
+       parently deals with the variation across  kernel
+       versions.
+
+   CC lliibbrraarryy//kkeerrnneell ddiiffffeerreenncceess
+       At  the kernel level, user IDs and group IDs are
+       a per-thread attribute.  However, POSIX requires
+       that  all  threads  in  a process share the same
+       credentials.  The NPTL threading  implementation
+       handles  the  POSIX  requirements  by  providing
+       wrapper functions for the various  system  calls
+       that  change process UIDs and GIDs.  These wrap‐
+       per functions (including the one  for  sseettuuiidd())
+       employ  a  signal-based technique to ensure that
+       when one thread changes credentials, all of  the
+       other  threads  in the process also change their
+       credentials.  For details, see nnppttll(7).
+
+SSEEEE AALLSSOO
+       ggeettuuiidd(2), sseetteeuuiidd(2), sseettffssuuiidd(2), sseettrreeuuiidd(2),
+       ccaappaabbiilliittiieess(7),    ccrreeddeennttiiaallss(7),   uusseerr__nnaammee‐‐
+       ssppaacceess(7)
+
+CCOOLLOOPPHHOONN
+       This page is part of release 5.05 of  the  Linux
+       _m_a_n_-_p_a_g_e_s   project.    A   description  of  the
+       project, information about reporting  bugs,  and
+       the latest version of this page, can be found at
+       https://www.kernel.org/doc/man-pages/.
+
+Linux                  2019-03-06             SETUID(2)
